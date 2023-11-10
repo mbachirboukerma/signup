@@ -10,6 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Sign up | iTOUCH</title>
     <link rel="shortcut icon" href="./assets/images/android-chrome-192x192.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <script src="./assets/js/script.js" defer></script>
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
@@ -25,13 +26,15 @@
                 <img src="./assets/images/dbl-arrow.png" alt="">
             </a>
         </div>
+
+        <!-- form -->
         <form action="" method="post" id="contactForm">
             <div class="form-container slideRight-animation">
                 <h1 class="form-header">Get started</h1>
         
                 <div class="input-container">
                     <label for="email">G-suite</label>
-                    <input type="email" name="email" id="mail" required>
+                    <input type="text" name="email" id="email" required>
                     <div class="error"></div>
                 </div>
         
@@ -42,40 +45,53 @@
                 </div>
         
                 <div class="input-container">
-                    <label for="field">Field</label>
+                    <label for="field">Field + Class</label>
                     <input type="text" name="field" id="field" required>
                     <div class="error"></div>
                 </div>
         
                 <div class="input-container">
-                    <label for="class">Class</label>
-                    <input type="text" name="class" id="class" required>
-                    <div class="error"></div>
+                    <label for="team" class="form-label">Choose a Team</label>
+                    <select name="team" id="teamSelect" class="form-select" required style="background-color: #06283D; color: rgb(232, 237, 241); border: none;">
+                        <option value="design">Design Team</option>
+                        <option value="programming">Programming Team</option>
+                    </select>
                 </div>
-        
-                <div class="input-container">
-                    <label for="talents">Talents and interests</label> <!-- Corrected the "for" attribute value -->
-                    <textarea name="talents" id="talents" required></textarea> <!-- Removed "type" attribute -->
-                    <div class="error"></div>
-                </div>
-        
-                <div id="btm">
-                    <button type="submit" class="submit-btn">Register Now</button>
-                    <div id="spinner" class="disabled text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only"></span>
-                        </div>
-                        <strong class="mt-2">Sending...</strong>
-                    </div>    
-                </div>
-                           </div> 
-        </form>
 
+                <div class="input-container">
+                    <label for="talents" class="form-label">Talents and Interests</label>
+                    <textarea name="talents" id="talents" class="form-control" required style="background-color: #1d2b3a; color: rgb(250, 233, 233); border: 1px solid #465c72;"></textarea>
+                    <div class="error"></div>
+                </div>
     
         
-                            
+                <div class="input-container">
+                    <label for="pc" class="form-label">Do you have a PC?</label>
+                    <select name="pc" id="pc" class="form-select" required>
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                            <div class="input-container" id="btm">
+                        <button type="submit" class="submit-btn">Register Now</button>
+                        <div id="spinner" class="disabled text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            <strong class="mt-2">Sending...</strong>
+                        </div>
+                    </div>
+                </div>
         
 
+
+        
+                <div class="error"></div>
+            </div>
+        </form>
+        
+
+
+        <!-- thank you for signing up -->
     </main>
     <section class="outro-overlay disabled slideUp-animation">
         <h1 class="company">iTOUCH</h1>
@@ -90,20 +106,47 @@
     </section>
 
     <script>
+        
+
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwZyNpHk-aKH91n-J_zw3RFK3j2BPxsOFZKC40naZ27Zg9mtZKNrUmwhdNGtnVkl25Q/exec';
-        const form = document.getElementById('contactForm');
-        const cardContainer = document.querySelector('.card-container');
-        const outroOverlay = document.querySelector('.outro-overlay');
-        const spinner = document.getElementById('spinner');
-    
-        form.addEventListener('submit', e => {
+const scriptURL2 = 'https://script.google.com/macros/s/AKfycbx1J4YMhWDAehQsjBNJhicruBh5ieiDlVoeyAWpqcEgm8T2uJ46mSc0cxLnatxgJslDYw/exec';
+
+const form = document.getElementById('contactForm');
+const cardContainer = document.querySelector('.card-container');
+const outroOverlay = document.querySelector('.outro-overlay');
+const spinner = document.getElementById('spinner');
+
+form.addEventListener('submit', e => {
     e.preventDefault();
     spinner.classList.remove('disabled');
     form.querySelector('.submit-btn').classList.add('disabled'); // Assuming the button has an id of "submit-btn"
 
     const formData = new FormData(form);
+    //add gsuite domain
+        const username = formData.get('email');
+    if (!username.endsWith('@g.ens-kouba.dz')) {
+    formData.set('email', username + '@g.ens-kouba.dz');
+}
 
-    fetch(scriptURL, { method: 'POST', body: formData })
+
+    // Get the selected team value
+    const selectedTeam = formData.get('team');
+
+    // Choose the appropriate URL based on the selected team
+    const targetScriptURL = selectedTeam === 'programming' ? scriptURL : scriptURL2;
+
+    const hasPC = formData.get('pc');
+    const talents = formData.get('talents'); // Move this line outside the if-else block
+
+if (hasPC === 'yes') {
+    formData.set('talents','Yes I have a PC, '+ talents);
+} else {
+    formData.set('talents','No I dont have a PC, '+ talents);
+}
+
+
+
+    fetch(targetScriptURL, { method: 'POST', body: formData })
         .then(response => response.json())
         .then(data => {
             console.log('Success!', data);
@@ -113,8 +156,13 @@
             outroOverlay.style.display = 'flex'; // Show the outro-overlay section
         });
 });
+
     </script>
 
 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
     </body>
 </html>
