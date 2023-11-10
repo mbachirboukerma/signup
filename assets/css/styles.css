@@ -61,7 +61,7 @@ textarea{
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 45px;
-    padding: 50px;
+    padding: 20px;
     color: var(--form-txt);
 }
 .form-header {
@@ -70,6 +70,10 @@ textarea{
     margin-bottom: 0;
     font-size: 40px;
     color: white;
+}
+
+#last-row{
+    color: #ccc;
 }
 input , textarea {
     display: block;
@@ -82,6 +86,10 @@ input , textarea {
     transition: all .5s ease-in;
     color: var(--opac-white);
 } 
+
+.input-container textarea:focus { background-color: green; }
+
+
 input::placeholder{
     content: none;
 }
@@ -271,6 +279,70 @@ input:valid {
 }
 
 
+
+/* Add this CSS to your existing styles.css or in a <style> tag in the <head> of your HTML */
+
+/* Style for the select element */
+.input-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+/* Style for the button */
+#team{
+    background-color: #06283D;
+    color: #ccc;
+    padding: 3px;
+    margin-top: 5px;
+    border: #ccc;
+    border-radius: 10px;
+}
+#pc{
+    background-color: #06283D;
+    color: #ccc;
+    margin-top: 5px;
+    border: #ccc;
+    border-radius: 10px;
+}
+.input-container .submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #06283D;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+/* Adjust the position of the button under the select */
+.input-container .submit-btn {
+    display: block;
+}
+
+/* Center the button */
+.input-container .submit-btn {
+    margin: 0 auto;
+}
+
+/* Adjust the position of the error message */
+.input-container .error {
+    margin-top: 5px;
+    color: red;
+}
+
+/* Ensure the button is not too close to the select on smaller screens */
+@media (max-width: 768px) {
+    .input-container .submit-btn {
+        margin-top: 15px;
+    }
+}
+
+
 /*
   SVG ANIMATION
 */
@@ -385,3 +457,5 @@ a {
         order: 1;
     }
 }
+
+
